@@ -1,5 +1,5 @@
 format: 
-	cargo fmt -- --check
+	cargo fmt
 
 lint:
 	cargo clippy -- -D warnings
