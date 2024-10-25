@@ -111,18 +111,19 @@ pub fn delete_row(country: &str) -> Result<()> {
     Ok(())
 }
 
-pub fn general(query: &str) -> Result<Option<Vec<Vec<String>>>> {
+pub fn general(query: &str) -> Result<Option<Vec<(String, i32, i32, i32, f64)>>> {
     let conn = Connection::open("drink.db")?;
     let mut stmt = conn.prepare(query)?;
-    let column_count = stmt.column_count();
 
     if query.trim().to_lowercase().starts_with("select") {
         let rows = stmt.query_map([], |row| {
-            let mut result = Vec::new();
-            for i in 0..column_count {
-                result.push(row.get::<usize, String>(i)?);
-            }
-            Ok(result)
+            Ok((
+                row.get(0)?,
+                row.get(1)?,
+                row.get(2)?,
+                row.get(3)?,
+                row.get(4)?
+            ))
         })?;
 
         let mut results = Vec::new();

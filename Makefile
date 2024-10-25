@@ -1,25 +1,35 @@
-install: 
-	pip install --upgrade pip && pip install -r requirements.txt 
-
 format: 
-	black *.py
+	cargo fmt -- --check
 
 lint:
-	pylint --disable=R,C --ignore-patterns=test_.*?py $(wildcard *.py)
+	cargo clippy -- -D warnings
 
 test: 
-	python -m pytest -cov=main test_main.py
+	cargo test
 
-all: install format lint test
+run:
+	cargo run
+
+all: format lint test run
+
+release:
+	cargo build --release
 
 transform:
-	python main.py transform  "drink.db" "https://raw.githubusercontent.com/fivethirtyeight/data/master/alcohol-consumption/drinks.csv"
+	cargo run transform  "drink.db" "https://raw.githubusercontent.com/fivethirtyeight/data/master/alcohol-consumption/drinks.csv"
 
-query1:
-	python main.py general "INSERT INTO drink(country,beer_servings,spirit_servings,wine_servings, total_litres_of_pure_alcohol) VALUES('USC', 10,100,1000,0.1) "
+read_all:
+	cargo run read
 
-query2:
-	python main.py general "UPDATE drink SET  total_litres_of_pure_alcohol  = -0.1 WHERE country = 'USA'"
+create:
+	cargo create "Test Country1" 100 150 200 2.5
 
+update:
+	cargo run update "Test Country" 10
 
+delete:
+	cargo run delete "Test Country"
+
+general:
+	cargo run general "UPDATE drink SET beer_servings = 100 WHERE country = 'USA';"
 
