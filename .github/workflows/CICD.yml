@@ -32,8 +32,8 @@ jobs:
       
       - name: general query
         run: make general
-      - name: Archive Binary
-        uses: actions/upload-artifact@v2
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         with:
           name: optimized-binary
           path: target/release/allen_crud
