@@ -22,14 +22,12 @@ read_all:
 	cargo run read
 
 create:
-	cargo create "Test Country1" 100 150 200 2.5
+	cargo create "Test Country" 100 150 200 2.5
 
 update:
-	cargo run update "Test Country" 10
+	cargo run update "USA" 10
 
 delete:
-	cargo run delete "Test Country"
+	cargo run delete "Togo"
 
-general:
-	cargo run general "UPDATE drink SET beer_servings = 100 WHERE country = 'USA';"
 

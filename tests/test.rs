@@ -33,7 +33,7 @@ fn test_read_all() {
 fn test_update_row() {
     let mut cmd = Command::cargo_bin("allen_crud").unwrap(); // Replace with your binary name
     cmd.arg("update")
-        .arg("USA") // country
+        .arg("China") // country
         .arg("15") // new beer_servings
         .assert()
         .success(); // Assert that the command executed successfully
