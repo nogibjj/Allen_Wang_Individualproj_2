@@ -33,7 +33,7 @@ jobs:
       - name: Create 
         run: make create 
       - name: Read
-        run: make read 
+        run: make read_all
       - name: Update 
         run: make update 
       - name: Delete 
