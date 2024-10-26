@@ -42,7 +42,7 @@ fn handle_arguments() -> Result<(), Box<dyn Error>> {
                 }
             }
             Err(e) => eprintln!("Error reading rows: {}", e),
-        },
+        }
         "update" => {
             if args.len() < 4 {
                 println!("Usage: {} update [country] [beer_servings]", args[0]);
