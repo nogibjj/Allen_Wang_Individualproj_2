@@ -1,7 +1,8 @@
 use rusqlite::{params, Connection, Result};
-use reqwest;
 use csv::ReaderBuilder;
 use std::io::Cursor;
+
+type DrinkData = Vec<(String, i32, i32, i32, f64)>;
 
 pub fn csv_to_db(db_file: &str, url: &str) -> Result<(), Box<dyn std::error::Error>> {
     let conn = Connection::open(db_file)?;
@@ -76,7 +77,7 @@ pub fn create_row(country: &str, beer_servings: i32, spirit_servings: i32, wine_
     Ok(conn.last_insert_rowid() as u64)
 }
 
-pub fn read_all() -> Result<Vec<(String, i32, i32, i32, f64)>> {
+pub fn read_all() -> Result<DrinkData> {
     let conn = Connection::open("drink.db")?;
     let mut stmt = conn.prepare("SELECT * FROM drink")?;
     let rows = stmt.query_map([], |row| {
@@ -111,7 +112,7 @@ pub fn delete_row(country: &str) -> Result<()> {
     Ok(())
 }
 
-pub fn general(query: &str) -> Result<Option<Vec<(String, i32, i32, i32, f64)>>> {
+pub fn general(query: &str) ->  Result<Option<DrinkData>> {
     let conn = Connection::open("drink.db")?;
     let mut stmt = conn.prepare(query)?;
 
