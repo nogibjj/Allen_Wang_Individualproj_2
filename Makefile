@@ -22,7 +22,7 @@ read_all:
 	cargo run read
 
 create:
-	cargo create "Test Country" 100 150 200 2.5
+	cargo run create "Test Country" 100 150 200 2.5
 
 update:
 	cargo run update "USA" 10
