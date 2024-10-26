@@ -1,5 +1,5 @@
-use rusqlite::{params, Connection, Result};
 use csv::ReaderBuilder;
+use rusqlite::{params, Connection, Result};
 use std::io::Cursor;
 
 type DrinkData = Vec<(String, i32, i32, i32, f64)>;
@@ -8,20 +8,27 @@ pub fn csv_to_db(db_file: &str, url: &str) -> Result<(), Box<dyn std::error::Err
     let conn = Connection::open(db_file)?;
 
     // Check if the table 'drink' already exists
-    let mut stmt = conn.prepare(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='drink';",
-    )?;
+    let mut stmt =
+        conn.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='drink';")?;
     let table_exists = stmt.exists([])?;
 
     if table_exists {
-        println!("The table 'drink' already exists in {}. Skipping data insertion.", db_file);
+        println!(
+            "The table 'drink' already exists in {}. Skipping data insertion.",
+            db_file
+        );
         return Ok(());
     }
 
     // Fetch CSV data from the URL
     let response = reqwest::blocking::get(url)?;
     if !response.status().is_success() {
-        return Err(format!("Failed to fetch data from {}. Status code: {}", url, response.status()).into());
+        return Err(format!(
+            "Failed to fetch data from {}. Status code: {}",
+            url,
+            response.status()
+        )
+        .into());
     }
     let csv_data = response.text()?;
 
@@ -64,14 +71,25 @@ pub fn csv_to_db(db_file: &str, url: &str) -> Result<(), Box<dyn std::error::Err
     Ok(())
 }
 
-
-pub fn create_row(country: &str, beer_servings: i32, spirit_servings: i32, wine_servings: i32, total_litres_of_pure_alcohol: f64) -> Result<u64> {
+pub fn create_row(
+    country: &str,
+    beer_servings: i32,
+    spirit_servings: i32,
+    wine_servings: i32,
+    total_litres_of_pure_alcohol: f64,
+) -> Result<u64> {
     let conn = Connection::open("drink.db")?;
     let sql = "INSERT INTO drink (country, beer_servings, spirit_servings, wine_servings, total_litres_of_pure_alcohol) VALUES (?, ?, ?, ?, ?)";
-    
+
     conn.execute(
         sql,
-        params![country, beer_servings, spirit_servings, wine_servings, total_litres_of_pure_alcohol],
+        params![
+            country,
+            beer_servings,
+            spirit_servings,
+            wine_servings,
+            total_litres_of_pure_alcohol
+        ],
     )?;
 
     Ok(conn.last_insert_rowid() as u64)
@@ -86,7 +104,7 @@ pub fn read_all() -> Result<DrinkData> {
             row.get(1)?,
             row.get(2)?,
             row.get(3)?,
-            row.get(4)?
+            row.get(4)?,
         ))
     })?;
 
@@ -112,7 +130,7 @@ pub fn delete_row(country: &str) -> Result<()> {
     Ok(())
 }
 
-pub fn general(query: &str) ->  Result<Option<DrinkData>> {
+pub fn general(query: &str) -> Result<Option<DrinkData>> {
     let conn = Connection::open("drink.db")?;
     let mut stmt = conn.prepare(query)?;
 
@@ -123,7 +141,7 @@ pub fn general(query: &str) ->  Result<Option<DrinkData>> {
                 row.get(1)?,
                 row.get(2)?,
                 row.get(3)?,
-                row.get(4)?
+                row.get(4)?,
             ))
         })?;
 

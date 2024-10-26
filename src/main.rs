@@ -1,11 +1,14 @@
-use allen_crud::{csv_to_db, create_row, read_all, delete_row, general, update_row};
+use allen_crud::{create_row, csv_to_db, delete_row, general, read_all, update_row};
 use std::env;
 use std::error::Error;
 
 fn handle_arguments() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
-        println!("Usage: {} [create | read | update | delete | transform | general]", args[0]);
+        println!(
+            "Usage: {} [create | read | update | delete | transform | general]",
+            args[0]
+        );
         return Ok(());
     }
 
@@ -32,16 +35,14 @@ fn handle_arguments() -> Result<(), Box<dyn Error>> {
                 Err(e) => eprintln!("Failed to create row: {}", e),
             }
         }
-        "read" => {
-            match read_all() {
-                Ok(rows) => {
-                    for row in rows {
-                        println!("{:?}", row);
-                    }
+        "read" => match read_all() {
+            Ok(rows) => {
+                for row in rows {
+                    println!("{:?}", row);
                 }
-                Err(e) => eprintln!("Error reading rows: {}", e),
             }
-        }
+            Err(e) => eprintln!("Error reading rows: {}", e),
+        },
         "update" => {
             if args.len() < 4 {
                 println!("Usage: {} update [country] [beer_servings]", args[0]);
@@ -80,7 +81,7 @@ fn handle_arguments() -> Result<(), Box<dyn Error>> {
                 return Ok(());
             }
             let query = &args[2];
-            println!("{:?}",query);
+            println!("{:?}", query);
             match general(query) {
                 Ok(Some(result)) => {
                     for row in result {
