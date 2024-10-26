@@ -26,9 +26,7 @@ fn test_create_row() {
 #[test]
 fn test_read_all() {
     let mut cmd = Command::cargo_bin("allen_crud").unwrap(); // Replace with your binary name
-    cmd.arg("read")
-        .assert()
-        .success(); // Assert that the command executed successfully
+    cmd.arg("read").assert().success(); // Assert that the command executed successfully
 }
 
 #[test]
@@ -44,10 +42,7 @@ fn test_update_row() {
 #[test]
 fn test_delete_row() {
     let mut cmd = Command::cargo_bin("allen_crud").unwrap(); // Replace with your binary name
-    cmd.arg("delete")
-        .arg("Canada")
-        .assert()
-        .success(); // Assert that the command executed successfully
+    cmd.arg("delete").arg("Canada").assert().success(); // Assert that the command executed successfully
 }
 
 #[test]
