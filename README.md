@@ -1,47 +1,53 @@
-# Allen_Wang_miniproj_5
+# Allen_Wang_Individualproj_2
 
-[![CI](https://github.com/nogibjj/Allen_Wang_miniproj_5/actions/workflows/CICD.yml/badge.svg)](https://github.com/nogibjj/Allen_Wang_miniproj_5/actions/workflows/CICD.yml)
+[![CI](https://github.com/nogibjj/Allen_Wang_Individualproj_2/actions/workflows/CICD.yml/badge.svg)](https://github.com/nogibjj/Allen_Wang_Individualproj_2/actions/workflows/CICD.yml)
 
 ## Overview
 
-This project demonstrates connecting to a SQL database, performing CRUD operations (Create, Read, Update, Delete), and writing two distinct SQL queries. The project is implemented in Python, with CI/CD setup for testing and validation.
+This project demonstrates a Rust CLI application that performs CRUD operations (Create, Read, Update, Delete) on a SQLite database. The application is packaged as a Rust binary, with CI/CD configured to test, build, and lint code on each commit. An optimized Rust binary is generated as a GitLab Actions artifact for download.
 
 ## Project Structure
 
-- **.devcontainer/**: Configuration for the development container.
-- **Makefile**: Provides commands for setup, formatting, linting, testing, and running SQL queries:
-  - `make install`: Installs dependencies.
-  - `make format`: Formats Python files.
-  - `make lint`: Lints Python files.
+Here's an updated `README.md` tailored to the project requirements:
+
+## Project Structure
+
+- **src/**: Contains the Rust source code.
+- **drink.db**: The SQLite database used for CRUD operations.
+- **tests/**: Integration tests for CRUD operations.
+- **Makefile**: Commands for setup, testing, and running the application.
   - `make test`: Runs tests.
-  - `make all`: Runs all tasks (install, format, lint, and test).
-  - `make transform`: Transforms data and stores it in the `drink.db` database.
-  - `make query1`: Inserts a new record into the `drink` table.
-  - `make query2`: Updates an existing record in the `drink` table.
-- **.github/workflows/ci.yml**: CI/CD pipeline configuration.
-- **main.py**: Python script to handle data transformation, and database queries.
-- **README.md**: Setup, usage instructions, and project description.
+  - `make release`: Builds an optimized binary.
+- **.github/workflows/ci.yml**: GitHub Actions workflow for CI/CD.
+- **README.md**: Project description, setup, and instructions.
+
 
 ## CRUD Operations
 
-- **Create**: Insert new records into the database.
+### Using the Rust CLI:
+1. **Create**: Add a new record.
     ```bash
-    Python main.py create $(country name) $(beer servings) $(spirit servings) $(wine servings) $(total litres_of_pure_alcohol)
+    make create USB 10 20 30 10.7
     ```
-
-- **Read**: Select and retrieve data.
+2. **Read**: Retrieve all records.
     ```bash
-    Python main.py read
+    make read
     ```
-
-- **Update**: Modify existing records.
+3. **Update**: Modify an existing record.
     ```bash
-    Python main.py update $(country name) $(beer servings)
+    make update USB 15
     ```
-
-- **Delete**: Remove records from the database.
+4. **Delete**: Remove a record.
     ```bash
-    Python main.py delete $(country name)
+    make delete USB
+    ```
+5. **Transform**: Load CSV data into the database.
+    ```bash
+    make transform data.db https://example.com/data.csv
+    ```
+6. **General**: Execute a custom SQL query.
+    ```bash
+    make general "UPDATE drink SET beer_servings = 100 WHERE country = 'USB';"
     ```
 
 
@@ -50,14 +56,13 @@ This project demonstrates connecting to a SQL database, performing CRUD operatio
 1. **Clone the repository**:
 
     ```bash
-    git clone https://github.com/nogibjj/Allen_Wang_miniproj_5.git
-    cd Allen_Wang_miniproj_5
+    git clone https://github.com/nogibjj/Allen_Wang_Individualproj_2.git
+    cd Allen_Wang_Individualproj_2
     ```
 
-2. **Install dependencies**:
-
+2. **Build**:
     ```bash
-    make install
+    make build
     ```
 
 3. **Format code**:
@@ -77,22 +82,27 @@ This project demonstrates connecting to a SQL database, performing CRUD operatio
     ```bash
     make test
     ```
+## CI/CD Pipeline
+
+The CI/CD pipeline automatically:
+- Builds and lints the Rust code.
+- Runs unit tests to validate functionality.
+- Generates an optimized binary as a downloadable artifact.
+
 ## Demonstration of Database Changes
 
-The following changes were made to the `drink` table in the `drink.db` database through CI/CD and test_main.py:
+The following sample operations were conducted on the `drink.db` database during CICD:
+1. **Deleted** record for the country *Togo**.
+   ![Delete Togo](img/delete.png)
+2. **Updated** record for **USA**: `beer_servings = 10`.
+   ![Update USA](img/usa_update.png)
+3. **Created** new records for countries **Test Country**.
+   ![Create Test Country](img/create.png)
 
-1. **Deleted** the record for the country **Canada**.
-   ![Updated Database Table](img/canada.png)
-   ![Updated Database Table](img/canada_delete.png)
+## LLM Usage
 
-2. **Updated** the record for the country **USA**:
-   - `beer_servings = 15`
-   - `total_litres_of_pure_alcohol = -0.1`
-  
-    ![Updated Database Table](img/usa.png)
+I used an LLM to assist with structuring Rust code, especially in areas like module setup, error handling, and efficient CLI input handling. This ensured best practices and enhanced readability in Rust syntax.
 
-3. **Added** a new record for the country **USB**.
-   ![Updated Database Table](img/usb.png)
+## Video Demo
 
-4. **Added** a new record for the country **USC**.
-   ![Updated Database Table](img/usc.png)
+Watch the [project demo on YouTube](#).
