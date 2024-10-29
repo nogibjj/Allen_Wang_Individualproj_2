@@ -105,4 +105,4 @@ I used an LLM to assist with structuring Rust code, especially in areas like mod
 
 ## Video Demo
 
-Watch the [project demo on YouTube](#).
+Watch the [project demo on YouTube](https://youtu.be/vj8cZaK_2Ys).
